@@ -28,11 +28,11 @@ double calculation(char *output) {
       double value_1 = pop_calc(&stack);
       double value_2 = pop_calc(&stack);
       push_calc(&stack, pow(value_2, value_1));
-    // } else if (token[0] == '%') {
-    //   double value_1 = pop_calc(&stack);
-    //   double value_2 = pop_calc(&stack);
-    //   double mod;
-    //   push_calc(&stack, value_1 % value_2);
+      // } else if (token[0] == '%') {
+      //   double value_1 = pop_calc(&stack);
+      //   double value_2 = pop_calc(&stack);
+      //   double mod;
+      //   push_calc(&stack, value_1 % value_2);
     } else if (token[0] == 'A') {
       double value = pop_calc(&stack);
       push_calc(&stack, cos(value));
