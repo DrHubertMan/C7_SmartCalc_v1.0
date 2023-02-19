@@ -1,5 +1,10 @@
 #include "smartcalc.h"
 
+void type_in_output(char *output, int *i, char sym) {
+  output[*i] = sym;
+  *i += 1;
+}
+
 int sorting_station(char *input, char *output) {
   int exit_code = 0;
   Node *stack = NULL;
@@ -10,8 +15,9 @@ int sorting_station(char *input, char *output) {
       continue;
 
     } else if (char_is_number(input[i])) {
-      output[output_sym_counter] = input[i];
-      output_sym_counter++;
+      type_in_output(output, &output_sym_counter, input[i]);
+      // output[output_sym_counter] = input[i];
+      // output_sym_counter++;
       if (input[i + 1] == '.') {
         if (char_is_number(input[i + 2])) {
           i++;

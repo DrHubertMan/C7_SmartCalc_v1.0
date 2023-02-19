@@ -29,5 +29,6 @@ int priority(char c);
 void push_calc(Node_calc **head, double number);
 double pop_calc(Node_calc **head);
 double calculation(char *output);
+void type_in_output(char *output, int *i, char sym);
 
 #endif  // SRC_SMARTCALC_H
