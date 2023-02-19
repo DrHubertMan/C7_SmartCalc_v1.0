@@ -59,3 +59,8 @@ int priority(char c) {
   }
   return result;
 }
+
+void type_in_output(char *output, int *i, char sym) {
+  output[*i] = sym;
+  *i += 1;
+}

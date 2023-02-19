@@ -1,10 +1,5 @@
 #include "smartcalc.h"
 
-void type_in_output(char *output, int *i, char sym) {
-  output[*i] = sym;
-  *i += 1;
-}
-
 int sorting_station(char *input, char *output) {
   int exit_code = 0;
   Node *stack = NULL;
@@ -16,25 +11,20 @@ int sorting_station(char *input, char *output) {
 
     } else if (char_is_number(input[i])) {
       type_in_output(output, &output_sym_counter, input[i]);
-      // output[output_sym_counter] = input[i];
-      // output_sym_counter++;
       if (input[i + 1] == '.') {
         if (char_is_number(input[i + 2])) {
           i++;
-          output[output_sym_counter] = input[i];
-          output_sym_counter++;
+          type_in_output(output, &output_sym_counter, input[i]);
           while (char_is_number(input[i + 1])) {
             i++;
-            output[output_sym_counter] = input[i];
-            output_sym_counter++;
+            type_in_output(output, &output_sym_counter, input[i]);
           }
         } else {
           exit_code = -1;
           break;
         }
       }
-      output[output_sym_counter] = ' ';
-      output_sym_counter++;
+      type_in_output(output, &output_sym_counter, ' ');
 
     } else if (input[i] == '(') {
       push(&stack, input[i]);
@@ -46,10 +36,8 @@ int sorting_station(char *input, char *output) {
     } else if (input[i] == ',') {
       while (stack && stack->value != '(') {
         if (stack && char_is_operator(stack->value)) {
-          output[output_sym_counter] = pop(&stack);
-          output_sym_counter++;
-          output[output_sym_counter] = ' ';
-          output_sym_counter++;
+          type_in_output(output, &output_sym_counter, pop(&stack));
+          type_in_output(output, &output_sym_counter, ' ');
         }
       }
       if (stack && stack->value != '(') {
@@ -63,10 +51,8 @@ int sorting_station(char *input, char *output) {
              (priority(input[i]) <= priority(stack->value))) ||
             (!is_left_associative(input[i]) &&
              (priority(input[i]) < priority(stack->value)))) {
-          output[output_sym_counter] = pop(&stack);
-          output_sym_counter++;
-          output[output_sym_counter] = ' ';
-          output_sym_counter++;
+          type_in_output(output, &output_sym_counter, pop(&stack));
+          type_in_output(output, &output_sym_counter, ' ');
         } else {
           break;
         }
@@ -76,10 +62,8 @@ int sorting_station(char *input, char *output) {
     } else if (input[i] == ')') {
       while (stack && stack->value != '(') {
         if (char_is_operator(stack->value)) {
-          output[output_sym_counter] = pop(&stack);
-          output_sym_counter++;
-          output[output_sym_counter] = ' ';
-          output_sym_counter++;
+          type_in_output(output, &output_sym_counter, pop(&stack));
+          type_in_output(output, &output_sym_counter, ' ');
         }
       }
       if (stack && stack->value == '(') {
@@ -88,20 +72,16 @@ int sorting_station(char *input, char *output) {
         exit_code = -1;
       }
       if (stack && is_function_in_stack(stack->value)) {
-        output[output_sym_counter] = pop(&stack);
-        output_sym_counter++;
-        output[output_sym_counter] = ' ';
-        output_sym_counter++;
+        type_in_output(output, &output_sym_counter, pop(&stack));
+        type_in_output(output, &output_sym_counter, ' ');
       }
     }
   }
 
   while (stack) {
     if (char_is_operator(stack->value)) {
-      output[output_sym_counter] = pop(&stack);
-      output_sym_counter++;
-      output[output_sym_counter] = ' ';
-      output_sym_counter++;
+      type_in_output(output, &output_sym_counter, pop(&stack));
+      type_in_output(output, &output_sym_counter, ' ');
     } else {
       exit_code = -1;
       break;
