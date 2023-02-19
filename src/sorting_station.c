@@ -9,9 +9,9 @@ int sorting_station(char *input, char *output) {
     if (input[i] == ' ') {
       continue;
 
-    } else if (char_is_number(input[i])) {
+    } else if (char_is_number(input[i]) || input[i] == 'x') {
       type_in_output(output, &output_sym_counter, input[i]);
-      if (input[i + 1] == '.') {
+      if (input[i + 1] == '.' && input[i] != 'x') {
         if (char_is_number(input[i + 2])) {
           i++;
           type_in_output(output, &output_sym_counter, input[i]);
