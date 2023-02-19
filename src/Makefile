@@ -1,14 +1,15 @@
-CC = gcc -Wall -Werror -Wextra
+CC = gcc -Wall -Werror -Wextra -std=c11
 CFLAGS = -c
 OFLAGS = -o
 
 all: test
 
 test:
-	$(CC) $(OFLAGS) test.out *.c
-	./test.out
+	$(CC) $(OFLAGS) $@ *.c
+	./test
 
 clean:
-	rm *.out
+	rm test
 
 rebuild: clean all
+
