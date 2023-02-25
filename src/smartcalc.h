@@ -18,7 +18,7 @@ typedef struct Node_calc {
   struct Node_calc *next;
 } Node_calc;
 
-void x_string(char **output, double x_number);
+void x_string(char **output, double x_number, char *result);
 void push(Node **head, char sym);
 char pop(Node **head);
 int sorting_station(char *input, char *output);
@@ -30,7 +30,8 @@ int is_function_in_stack(char sym);
 int priority(char c);
 void push_calc(Node_calc **head, double number);
 double pop_calc(Node_calc **head);
-double calculation(char *output, double x_number, char answer);
+void calculation(char *output, char answer);
+double calculation_core(char *output);
 void type_in_output(char *output, int *i, char sym);
 
 

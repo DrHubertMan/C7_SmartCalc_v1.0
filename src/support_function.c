@@ -65,7 +65,7 @@ void type_in_output(char *output, int *i, char sym) {
   *i += 1;
 }
 
-void x_string(char **output, double x_number) {
+void x_string(char **output, double x_number, char *result) {
   char str[MAX_STR];
   char buff[MAX_STR];
   sprintf(str, "%.7f", x_number);
@@ -82,6 +82,6 @@ void x_string(char **output, double x_number) {
   x_pos++;
   strcat(buff, str);
   strcat(buff, *output + x_pos);
-  memset(*output, 0, MAX_STR);
-  strcat(*output, buff);
+  memset(result, 0, MAX_STR);
+  strcat(result, buff);
 }

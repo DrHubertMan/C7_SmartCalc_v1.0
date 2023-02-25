@@ -1,15 +1,29 @@
 #include "smartcalc.h"
 
-double calculation(char *output, double x_number, char answer) {
+void calculation(char *output, char answer) {
+  double x_number = -10;
   if (answer == 'x') {
-    x_string(&output, x_number);
+    for (int i = 0; i < 10; i++) {
+      char tmp[MAX_STR];
+      x_string(&output, x_number, tmp);
+      printf("%.7f\n", calculation_core(tmp));
+      x_number++;
+    }
+  } else {
+    printf("%.7f\n", calculation_core(output));
   }
-  printf("#%s#\n", output);
+}
+
+double calculation_core(char *output) {
   double result;
   Node_calc *stack = NULL;
-  char *token = strtok(output, " ");
+  char buff[256] = {0};
+  strcat(buff, output);
+  //printf("%s\n", output);
+  char *token = strtok(buff, " ");
   while (token) {
-    if (token[0] >= '0' && token[0] <= '9') {
+    if ((token[0] >= '0' && token[0] <= '9') ||
+        (token[0] == '-' && token[1] >= '0' && token[1] <= '9')) {
       double value = atof(token);
       push_calc(&stack, value);
     } else if (token[0] == '+') {
