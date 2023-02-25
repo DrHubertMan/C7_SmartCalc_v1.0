@@ -1,6 +1,10 @@
 #include "smartcalc.h"
 
-double calculation(char *output) {
+double calculation(char *output, double x_number, char answer) {
+  if (answer == 'x') {
+    x_string(&output, x_number);
+  }
+  printf("#%s#\n", output);
   double result;
   Node_calc *stack = NULL;
   char *token = strtok(output, " ");

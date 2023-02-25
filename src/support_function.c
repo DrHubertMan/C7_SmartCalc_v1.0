@@ -64,3 +64,24 @@ void type_in_output(char *output, int *i, char sym) {
   output[*i] = sym;
   *i += 1;
 }
+
+void x_string(char **output, double x_number) {
+  char str[MAX_STR];
+  char buff[MAX_STR];
+  sprintf(str, "%.7f", x_number);
+  int x_pos = 0;
+  int leng = strlen(*output);
+  for (int i = 0; i < leng; i++) {
+    if ((*output)[i] == 'x') {
+      x_pos = i;
+      break;
+    }
+  }
+  strncpy(buff, *output, x_pos);
+  buff[x_pos] = '\0';
+  x_pos++;
+  strcat(buff, str);
+  strcat(buff, *output + x_pos);
+  memset(*output, 0, MAX_STR);
+  strcat(*output, buff);
+}

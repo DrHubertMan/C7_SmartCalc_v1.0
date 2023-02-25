@@ -1,4 +1,4 @@
-CC = gcc -Wall -Werror -Wextra -std=c11 -fsanitize=address
+CC = gcc -Wall -Werror -Wextra -std=c11 -fsanitize=address -lm
 CFLAGS = -c
 OFLAGS = -o
 TARGET = smartcalc

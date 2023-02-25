@@ -6,6 +6,7 @@
 #include "string.h"
 
 #define S21_EPS 1e-6
+#define MAX_STR 255
 
 typedef struct Node {
   char value;
@@ -17,6 +18,7 @@ typedef struct Node_calc {
   struct Node_calc *next;
 } Node_calc;
 
+void x_string(char **output, double x_number);
 void push(Node **head, char sym);
 char pop(Node **head);
 int sorting_station(char *input, char *output);
@@ -28,7 +30,8 @@ int is_function_in_stack(char sym);
 int priority(char c);
 void push_calc(Node_calc **head, double number);
 double pop_calc(Node_calc **head);
-double calculation(char *output);
+double calculation(char *output, double x_number, char answer);
 void type_in_output(char *output, int *i, char sym);
+
 
 #endif  // SRC_SMARTCALC_H
