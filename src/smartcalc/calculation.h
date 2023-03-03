@@ -1,6 +1,7 @@
 #ifndef CALCULATION_H
 #define CALCULATION_H
 
+#include <QSignalMapper>
 #include <QGridLayout>
 #include <QWidget>
 #include <QLineEdit>
@@ -15,24 +16,24 @@ class Calculation : public QWidget
 public:
     Calculation();
 
-private slots:
-    void dig1();
-    void dig2();
-    void dig3();
-    void dig4();
-    void dig5();
-    void dig6();
-    void dig7();
-    void dig8();
-    void dig9();
-
 private:
-    MyButton *createButton(const QString text, const char *member);
-
+    MyButton *createNumButton(const QString text);
+    MyButton *createOperButton(const QString text);
+    MyButton *createFuncButton(const QString text);
+    MyButton *createDotButton(const QString text);
     QString m_infix_string;
-
     QLineEdit *m_display_up;
     QLineEdit *m_display_down;
     QLabel *m_label;
+
+private slots:
+    void onNumClicked(QString digit);
+    void onOperClicked(QString digit);
+    void onAcClicked();
+    void onCClicked();
+    void onFuncClicked(QString digit);
+    void onDotClicked(QString digit);
+    void onBrClicked();
 };
+
 #endif // CALCULATION_H
