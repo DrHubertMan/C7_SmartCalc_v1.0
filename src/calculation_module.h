@@ -20,6 +20,7 @@ typedef struct Node_calc {
   struct Node_calc *next;
 } Node_calc;
 
+double my_atof(char *str);
 void x_string(char **output, double x_number, char *result);
 void push(Node **head, char sym);
 char pop(Node **head);
@@ -35,6 +36,6 @@ void type_in_output(char *output, int *i, char sym);
 int sorting_station(char *input, char *output);
 double calculation_x_str(char *output, double x_value);
 double calculation_core(char *output);
-double my_atof(char *str);
+void double_to_string(double num, char* str, int precision);
 
 #endif // SRC_SMARTCALC_H

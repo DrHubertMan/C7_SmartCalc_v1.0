@@ -1,8 +1,8 @@
 #include "calculation_module.h"
 
 int char_is_operator(char sym) {
-  return (sym == 42 || sym == 43 || sym == 45 || sym == 47 || sym == 94 ||
-          sym == 37)
+  return (sym == '*' || sym == '+' || sym == '-' || sym == '/' || sym == '^' ||
+          sym == '%')
              ? 1
              : 0;
 }
@@ -68,7 +68,8 @@ void type_in_output(char *output, int *i, char sym) {
 void x_string(char **output, double x_number, char *result) {
   char str[MAX_STR];
   char buff[MAX_STR];
-  sprintf(str, "%.7f", x_number);
+  double_to_string(x_number, str, 7); // 7- precision
+  // sprintf(str, "%.7f", x_number);
   int x_pos = 0;
   int leng = strlen(*output);
   for (int i = 0; i < leng; i++) {
@@ -84,6 +85,47 @@ void x_string(char **output, double x_number, char *result) {
   strcat(buff, *output + x_pos);
   memset(result, 0, MAX_STR);
   strcat(result, buff);
+}
+
+void double_to_string(double num, char *str, int precision) {
+  num = round(num * pow(10, precision)) / pow(10, precision);
+  int integerPart = (int)num;
+  double fractionalPart = num - integerPart;
+
+  if (integerPart < 0) {
+    *str++ = '-';
+    integerPart = -integerPart;
+    num = -num;
+    fractionalPart = -fractionalPart;
+  }
+
+  int index = 0;
+  while (integerPart > 0) {
+    str[index++] = (char)(integerPart % 10) + '0';
+    integerPart /= 10;
+  }
+  int length = index;
+
+  for (int i = 0; i < index / 2; i++) {
+    char temp = str[i];
+    str[i] = str[length - i - 1];
+    str[length - i - 1] = temp;
+  }
+
+  if (precision > 0) {
+    str[length++] = '.';
+    for (int i = 0; i < precision; i++) {
+      fractionalPart *= 10;
+      int digit = (int)fractionalPart;
+      str[length++] = (char)digit + '0';
+      fractionalPart -= digit;
+    }
+  }
+  str[length] = '\0';
+  if (fabs(num) < (1e-6)) {
+    str[0] = '0';
+    str[1] = '\0';
+  }
 }
 
 void push(Node **head, char sym) {
@@ -161,7 +203,11 @@ int sorting_station(char *input, char *output) {
 
     } else if (is_function(&input[i]) != -1) {
       push(&stack, is_function(&input[i]));
-      i = i + 2;
+      if (is_function(&input[i]) == 'H') {
+        i += 1;
+      } else {
+        i += 2;
+      }
 
     } else if (input[i] == ',') {
       while (stack && stack->value != '(') {
@@ -247,28 +293,27 @@ double calculation_core(char *output) {
     } else if (token[0] == '+') {
       double value_1 = pop_calc(&stack);
       double value_2 = pop_calc(&stack);
-      push_calc(&stack, value_1 + value_2);
+      push_calc(&stack, value_2 + value_1);
     } else if (token[0] == '-') {
       double value_1 = pop_calc(&stack);
       double value_2 = pop_calc(&stack);
-      push_calc(&stack, value_1 - value_2);
+      push_calc(&stack, value_2 - value_1);
     } else if (token[0] == '*') {
       double value_1 = pop_calc(&stack);
       double value_2 = pop_calc(&stack);
-      push_calc(&stack, value_1 * value_2);
+      push_calc(&stack, value_2 * value_1);
     } else if (token[0] == '/') {
       double value_1 = pop_calc(&stack);
       double value_2 = pop_calc(&stack);
-      push_calc(&stack, value_1 / value_2);
+      push_calc(&stack, value_2 / value_1);
     } else if (token[0] == '^') {
       double value_1 = pop_calc(&stack);
       double value_2 = pop_calc(&stack);
       push_calc(&stack, pow(value_2, value_1));
-      // } else if (token[0] == '%') {
-      //   double value_1 = pop_calc(&stack);
-      //   double value_2 = pop_calc(&stack);
-      //   double mod;
-      //   push_calc(&stack, value_1 % value_2);
+    } else if (token[0] == '%') {
+      double value_1 = pop_calc(&stack);
+      double value_2 = pop_calc(&stack);
+      push_calc(&stack, (int)value_2 % (int)value_1);
     } else if (token[0] == 'A') {
       double value = pop_calc(&stack);
       push_calc(&stack, cos(value));
@@ -331,12 +376,3 @@ double my_atof(char *str) {
   }
   return sign * value;
 }
-// cos - A
-// sin - B
-// tan - C
-// aco - D
-// asi - E
-// ata - F
-// sqr - G
-// ln - H
-// log - I

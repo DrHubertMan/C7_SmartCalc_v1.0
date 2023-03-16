@@ -101,7 +101,8 @@ Calculation::Calculation() {
     MyButton *mul = createOperButton("*");
     MyButton *div = createOperButton("/");
     MyButton *deg = createOperButton("^");
-    MyButton *mod = createOperButton("mod");
+    MyButton *mod = createOperButton("%");
+
 
 
     MyButton *unar_sign   = createNumButton(QChar(0x000000B1));
@@ -287,12 +288,16 @@ void Calculation::typeResult(double resultCalc) {
 void Calculation::graphEdition(char *output){
     int xMinValue= xMin->value();
     int xMaxValue= xMax->value();
-    QVector<double> x(xMaxValue - xMinValue);
-    QVector<double> y(xMaxValue - xMinValue);
+    QVector<double> x((xMaxValue) - xMinValue);
+    QVector<double> y((xMaxValue) - xMinValue);
     int i = 0;
     for (; xMinValue < xMaxValue; xMinValue ++, i++) {
         x[i] = (double)xMinValue;
-        y[i] = calculation_x_str(output, x[i]);
+        if (strncmp(output, "", 1)== 0){
+            y[i] = 0;
+        } else {
+            y[i] = calculation_x_str(output, x[i]);
+        }
     }
 
     QCustomPlot *customPlot = new QCustomPlot;
@@ -306,28 +311,7 @@ void Calculation::graphEdition(char *output){
     customPlot->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     customPlot->show();
 
-//    for (int j = 0; j < i; j++){
-//        seriesGraph->append(x[j], y[j]);
-//    }
-//    QValueAxis *axisX = new QValueAxis();
-//    axisX->setRange(xMinValue, xMaxValue);
-//    chartGraph->addAxis(axisX, Qt::AlignBottom);
 
-//    QValueAxis *axisY = new QValueAxis();
-//    axisY->setRange(yMin->value(), yMax->value());
-//    chartGraph->addAxis(axisY, Qt::AlignLeft);
-
-//    seriesGraph->attachAxis(axisX);
-//    seriesGraph->attachAxis(axisY);
-
-//    chartGraph = new QChart();
-//    chartGraph->addSeries(seriesGraph);
-//    chartGraph->setTitle("Function_chart");
-
-//    chartViewGraph = new QChartView(chartGraph);
-//    chartViewGraph->setRenderHint(QPainter::Antialiasing);
-//    chartViewGraph->show();
-//    graphLayout->addWidget(chartViewGraph);
 }
 
 MyButton* Calculation::createNumButton(QString text) {

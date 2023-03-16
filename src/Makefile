@@ -61,7 +61,7 @@ $(TEST_FILE):
 	@checkmk clean_mode=0 $(CHECKMK_FILE) > $(TEST_FILE)
 
 
-test: $(LIB_NAME) $(TEST_FILE)
+test: $(TEST_FILE) $(LIB_NAME)
 	$(CC) $(CFLAGS) $^ -o $(TEST_EXE) $(LCHECK) $(CHECK_FLAGS)
 	@./$(TEST_EXE)
 
@@ -108,4 +108,6 @@ clean:
 	@rm -rf *.a *.gcda *.gcno *.o *.out
 	rm -rf $(OBJ_DIR) $(OBJ_GCOV_DIR) out
 	rm -rf $(TEST_FILE)
+	rm -rf SmartCalc/*.o
+	rm -rf SmartCalc/moc_*
 	@rm -rf dist*
