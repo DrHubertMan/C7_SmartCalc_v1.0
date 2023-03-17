@@ -92,7 +92,6 @@ style:
 	@clang-format -n *.c
 	@clang-format -n *.h
 	@clang-format -i *.h
-
 	@rm .clang-format
 
 rebuild: uninstall install
@@ -110,4 +109,5 @@ clean:
 	rm -rf $(TEST_FILE)
 	rm -rf SmartCalc/*.o
 	rm -rf SmartCalc/moc_*
+	rm -rf SmartCalc/SmartCalc
 	@rm -rf dist*

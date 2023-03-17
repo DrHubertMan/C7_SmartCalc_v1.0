@@ -345,6 +345,10 @@ double calculation_core(char *output) {
     token = strtok(NULL, " ");
   }
   result = pop_calc(&stack);
+  while (stack) {
+     pop_calc(&stack);
+  }
+  
   return result;
 }
 
