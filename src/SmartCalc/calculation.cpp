@@ -103,8 +103,6 @@ Calculation::Calculation() {
     MyButton *deg = createOperButton("^");
     MyButton *mod = createOperButton("%");
 
-
-
     MyButton *unar_sign   = createNumButton(QChar(0x000000B1));
     disconnect(unar_sign, &MyButton::clicked, this, nullptr);
     connect(unar_sign, &MyButton::clicked, this, [=](){ onUnarClicked();});
@@ -240,13 +238,6 @@ Calculation::Calculation() {
     QLabel *fakeLabel = new QLabel("");
     fakeLabel->setStyleSheet("font: 25pt");
     graphLayout->addWidget(fakeLabel, 10, 0, 20, 5);
-
-//    QLabel *fakeLabeltwo = new QLabel("");
-//    fakeLabeltwo->setStyleSheet("font: 25pt");
-//    graphLayout->addWidget(fakeLabeltwo, 14, 0, 3, 5);
-//    QLabel *fakeLabelthree = new QLabel("");
-//    fakeLabelthree->setStyleSheet("font: 25pt");
-//    graphLayout->addWidget(fakeLabelthree, 17, 0, 3, 5);
 
 }
 

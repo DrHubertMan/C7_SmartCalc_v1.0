@@ -29,9 +29,10 @@ build: install open
 open:
 	@chmod a+rwx SmartCalc
 	@open SmartCalc/SmartCalc.app/Contents/MacOS/SmartCalc
-
+	
 install:
 	cd $(PROJECT_NAME) && qmake -makefile $(PROJECT_FILE) && make
+	cp SmartCalc/SmartCalc.app/Contents/MacOS/SmartCalc $(DESTDIR)/
 	
 uninstall:
 	rm -rf SmartCalc/SmartCalc.app
@@ -45,7 +46,8 @@ dist:
 	tar czf dist.tar  *
 
 dvi:
-	open doc.txt
+	@doxygen calc_config
+	@open html/index.html
 
 create_dir:
 	@mkdir -p $(OBJ_DIR) $(OBJ_GCOV_DIR)
@@ -87,11 +89,8 @@ gcov_report: $(TEST_FILE) $(HEADER) libgcov.a
 
 style:
 	@cp ../materials/linters/.clang-format ./.clang-format
-# @clang-format -n *.c
-	@clang-format -i *.c
 	@clang-format -n *.c
 	@clang-format -n *.h
-	@clang-format -i *.h
 	@rm .clang-format
 
 rebuild: uninstall install
@@ -105,9 +104,13 @@ valgrind:
 clean:
 	@rm -rf test_test.out*
 	@rm -rf *.a *.gcda *.gcno *.o *.out
-	rm -rf $(OBJ_DIR) $(OBJ_GCOV_DIR) out
-	rm -rf $(TEST_FILE)
-	rm -rf SmartCalc/*.o
-	rm -rf SmartCalc/moc_*
-	rm -rf SmartCalc/SmartCalc
+	@rm -rf $(OBJ_DIR) $(OBJ_GCOV_DIR) out
+	@rm -rf $(TEST_FILE)
+	@rm -rf SmartCalc/*.o
+	@rm -rf SmartCalc/moc_*
+	@rm -rf SmartCalc/SmartCalc.app
+	@rm -rf SmartCalc/SmartCalc
+	@rm -rf SmartCalc/Makefile
+	@rm -rf html latex
 	@rm -rf dist*
+

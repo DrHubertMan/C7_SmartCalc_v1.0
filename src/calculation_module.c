@@ -1,5 +1,10 @@
 #include "calculation_module.h"
 
+/*!
+	 Проверяет является ли передаваемый символ оператором.
+  \param[in] sym - проверяемый символ.
+  \return Истина или ложь (1 или 0).
+*/
 int char_is_operator(char sym) {
   return (sym == '*' || sym == '+' || sym == '-' || sym == '/' || sym == '^' ||
           sym == '%')
@@ -7,8 +12,18 @@ int char_is_operator(char sym) {
              : 0;
 }
 
+/*!
+	 Проверяет является ли передаваемый символ цифрой.
+  \param[in] sym - проверяемый символ.
+  \return Истина или ложь (1 или 0).
+*/
 int char_is_number(char sym) { return (sym >= '0' && sym <= '9') ? 1 : 0; }
 
+/*!
+	 Проверяет является ли передаваемая строка функцией.
+  \param[in] *str - указатель на проверяемою строку.
+  \return В случае, если передаваемая строка является функцией возвращает символ соответствующий функции.
+*/
 char is_function(char *str) {
   char result = -1;
   if (strncmp(str, "cos", 3) == 0) {
@@ -33,6 +48,11 @@ char is_function(char *str) {
   return result;
 }
 
+/*!
+	 Проверяет является ли передаваемый символ из стека символом функции.
+  \param[in]  sym - проверяемый символ.
+  \return Истина или ложь (1 или 0).
+*/
 int is_function_in_stack(char sym) {
   return (sym == 'A' || sym == 'B' || sym == 'C' || sym == 'D' || sym == 'E' ||
           sym == 'F' || sym == 'G' || sym == 'H' || sym == 'I')
@@ -40,12 +60,22 @@ int is_function_in_stack(char sym) {
              : 0;
 }
 
+/*!
+	 Проверяет является ли передаваемый символ(оператор) левоасоциативным.
+  \param[in]  sym - проверяемый символ.
+  \return Истина или ложь (1 или 0).
+*/
 int is_left_associative(char sym) {
   return (sym == '*' || sym == '/' || sym == '+' || sym == '-' || sym == '%')
              ? 1
              : 0;
 }
 
+/*!
+	Определяет приоритет предаваемого оператора.
+  \param[in]  c - проверяемый символ.
+  \return Значение приоритета от 1 до 4.
+*/
 int priority(char c) {
   int result = 0;
   if (c == '^') {
@@ -60,15 +90,32 @@ int priority(char c) {
   return result;
 }
 
+/*!
+	Записывает символ по определенному индексу передаваемого массива символов.
+
+  После того как символ будет записан увеличивает индекс на один.
+  \param[in, out] *output - указатель на строку (массив символов).
+  \param[in, out] *i - указатель на индекс массива.
+  \param[in] sym - записываемый символ в массив.
+*/
 void type_in_output(char *output, int *i, char sym) {
   output[*i] = sym;
   *i += 1;
 }
 
+/*!
+	В исходной строке содержащей символ Х, заменяет его на значение.
+
+  При получении строки содержащую переменную Х, переводит передаваемое число типа double в
+  строку, затем подставляет эту строку вместо Х.
+  \param[in] **output - указатель на указатель строки содержащей Х.
+  \param[in] x_number - Число которое необходимо записать в строку.
+  \param[in, out] *result - Указатель на преобразованную строку.
+*/
 void x_string(char **output, double x_number, char *result) {
   char str[MAX_STR];
   char buff[MAX_STR];
-  double_to_string(x_number, str, 7); // 7- precision
+  double_to_string(x_number, str, 7);  // 7- precision
   // sprintf(str, "%.7f", x_number);
   int x_pos = 0;
   int leng = strlen(*output);
@@ -87,6 +134,13 @@ void x_string(char **output, double x_number, char *result) {
   strcat(result, buff);
 }
 
+/*!
+	Преобразует число типа double в строку, с возможностью задать точность.
+
+  \param[in] num - Преобразовываемое число.
+  \param[in] *str - Строка в которую запишется преобразованное значение.
+  \param[in, out] precision - Точность преобразования(кол-во знаков после точки).
+*/
 void double_to_string(double num, char *str, int precision) {
   num = round(num * pow(10, precision)) / pow(10, precision);
   int integerPart = (int)num;
@@ -128,6 +182,12 @@ void double_to_string(double num, char *str, int precision) {
   }
 }
 
+/*!
+	Создает новый узел односвязного списка
+
+  \param[in]  **head - Указатель на верхний узел стека.
+  \param[in] sym - Значение помещаемое на стек.
+*/
 void push(Node **head, char sym) {
   Node *tmp = (Node *)malloc(sizeof(Node));
   tmp->value = sym;
@@ -135,6 +195,12 @@ void push(Node **head, char sym) {
   (*head) = tmp;
 }
 
+/*!
+	Удаляет верхний узел стека.
+
+  \param[in]  **head - Указатель на верхний узел стека.
+  \return - Значение типа char, хранившееся в стеке.
+*/
 char pop(Node **head) {
   Node *prev = NULL;
   char sym;
@@ -148,6 +214,12 @@ char pop(Node **head) {
   return sym;
 }
 
+/*!
+	Создает новый узел односвязного списка для вычисления выражения в постфиксной нотации.
+
+  \param[in]  **head - Указатель на верхний узел стека.
+  \param[in] number - Значение помещаемое на стек.
+*/
 void push_calc(Node_calc **head, double number) {
   Node_calc *tmp = (Node_calc *)malloc(sizeof(Node_calc));
   tmp->value = number;
@@ -155,6 +227,12 @@ void push_calc(Node_calc **head, double number) {
   (*head) = tmp;
 }
 
+/*!
+	Удаляет верхний узел стека для вычисления выражения в постфиксной нотации.
+
+  \param[in]  **head - Указатель на верхний узел стека.
+  \return - Значение типа double, хранившееся в стеке.
+*/
 double pop_calc(Node_calc **head) {
   Node_calc *prev = NULL;
   double number;
@@ -168,6 +246,15 @@ double pop_calc(Node_calc **head) {
   return number;
 }
 
+/*!
+	Преобразует выражение входной строки.
+
+  Выражение записанное в инфиксной нотации, записанное во входной строке, используя стек, преобразуется
+  и записывается в выходную строку.
+  \param[in]  *input - Указатель на входную строку.
+  \param[out]  *output - Указатель на выходную строку.
+  \return - Код выполнения алгоритма (0 - Успех, любое другое значение - алгоритм завершен некоректно).
+*/
 int sorting_station(char *input, char *output) {
   int exit_code = 0;
   Node *stack = NULL;
@@ -270,6 +357,15 @@ int sorting_station(char *input, char *output) {
   return exit_code;
 }
 
+/*!
+	Вычисляет выражение с переменной Х.
+
+  Получаемт выражение записанное в постфиксной нотации содержащее переменную Х. Вызывает
+  функцию подставляющую в исходную строку значение Х. Затем вызывает функцию вычисляющую полученное выражение.
+  \param[in]  *output - Указатель на строку содержащую выражение с переменной Х.
+  \param[in]  x_value - Значение переменной Х.
+  \return - Вычисленное выражение.
+*/
 double calculation_x_str(char *output, double x_value) {
   double result = 0;
   char x_string_tmp[MAX_STR];
@@ -278,6 +374,14 @@ double calculation_x_str(char *output, double x_value) {
   return result;
 }
 
+/*!
+	Вычисляет выражение записанное в постфиксной нотации во входящей строке.
+
+  Получает в качестве аргумента строку, создается стек, входная строка режется на токены
+  в зависимости от того, что в токене находится вычисляет выражение.
+  \param[in]  *output - Указатель на строку содержащую выражение в постфиксной нотации.
+  \return - Вычисленное выражение.
+*/
 double calculation_core(char *output) {
   double result = 0;
   Node_calc *stack = NULL;
@@ -346,12 +450,18 @@ double calculation_core(char *output) {
   }
   result = pop_calc(&stack);
   while (stack) {
-     pop_calc(&stack);
+    pop_calc(&stack);
   }
-  
+
   return result;
 }
 
+/*!
+	Переводит число записанное в строковом формате в тип double.
+
+  \param[in]  *output - Указатель на строку содержащую число в строковом формате.
+  \return - Преобразованное число типа double.
+*/
 double my_atof(char *str) {
   double value = 0.0;
   int sign = 1;
